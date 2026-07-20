@@ -1,2 +1,3 @@
-# Faster-SVM
-A Low Dimensional Kernel Matrix for Faster Support Vector Machine
+### Faster-SVM
+#A Low Dimensional Kernel Matrix for Faster Support Vector Machine
+###Anonymous submission
