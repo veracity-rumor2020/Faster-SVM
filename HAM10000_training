@@ -22,10 +22,6 @@ from sklearn.metrics import (
 from cvxopt import matrix, solvers
 
 
-# =========================
-# Kernel Functions
-# =========================
-
 def linear_kernel(X, Z, **kwargs):
     return X @ Z.T
 
@@ -45,9 +41,6 @@ def rbf_kernel(X, Z, gamma=None, **kwargs):
     return np.exp(-gamma * K)
 
 
-# =========================
-# SVM Dual Solver
-# =========================
 
 def solve_svm_dual_cvxopt(X, y, C, kernel_fn,
                           degree=None, gamma=None, coef0=None,
@@ -88,19 +81,12 @@ def solve_svm_dual_cvxopt(X, y, C, kernel_fn,
     return alpha, float(np.mean(b_vals)), K
 
 
-# =========================
-# Decision Function
-# =========================
-
 def decision_function(X_train, y_train, alpha, b, X_test,
                       kernel_fn, degree=None, gamma=None, coef0=None):
     K = kernel_fn(X_train, X_test, degree=degree, gamma=gamma, coef0=coef0)
     return (alpha * y_train) @ K + b
 
 
-# =========================
-# Main Experiment Function
-# =========================
 
 def run_experiment(X_tr, y_tr,X_te, y_te, name, cluster_values,
                    kernel_type, degree=3, gamma=None, coef0=1.0):
@@ -134,9 +120,8 @@ def run_experiment(X_tr, y_tr,X_te, y_te, name, cluster_values,
     if gamma is None:
         gamma = 1.0 / (X_tr.shape[1] * X_tr.var())
 
-    # =========================
-    # Standard SVM
-    # =========================
+
+
     t0 = time.time()
     alpha, b, _ = solve_svm_dual_cvxopt(
         X_tr, y_tr_svm, C, kernel_fn, degree, gamma, coef0
@@ -172,9 +157,7 @@ def run_experiment(X_tr, y_tr,X_te, y_te, name, cluster_values,
     print(f"Recall     : {recall_score(y_te, y_pred):.4f}")
     print(f"F1 Score   : {f1_score(y_te, y_pred):.4f}")
 
-    # =========================
-    # Clustered SVM
-    # =========================
+    
     print("\n--- Clustered SVM ---")
 
     for k in cluster_values:
@@ -281,7 +264,8 @@ def load_hog_features(csv_file, image_folder,image_size=(128,128)):
 	return X,y,encoder
 
 if __name__ == "__main__":
-	'''
+	
+	print("====================Data Loading Start============================")
 	X, y, label_encoder = load_hog_features("HAM10000_metadata.csv", "HAMALL10000/",image_size=(128,128))
 	X_tr, X_te, y_tr, y_te = train_test_split(X,y,test_size=0.30,random_state=42,stratify=y)
 	print(X_tr.shape, y_tr.shape)
@@ -291,7 +275,7 @@ if __name__ == "__main__":
 
 	np.save("data/X_test.npy", X_te)
 	np.save("data/y_test.npy", y_te)
-	'''
+	
 	#-------------------
 	X_tr = np.load("data/X_train.npy")
 	y_tr = np.load("data/y_train.npy")
