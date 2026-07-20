@@ -23,9 +23,7 @@ from cvxopt import matrix, solvers
 
 
 
-# =========================
-# Kernel Functions
-# =========================
+
 
 def linear_kernel(X, Z, **kwargs):
     return X @ Z.T
